@@ -1,0 +1,104 @@
+//custom middleware
+// app.use((req,res,next)=>{
+//    console.log('start');
+//    res.on('finish',()=>{
+//     console.log('End');
+//    })
+//    next()
+// })
+
+
+// app.get("/", (req, res) => {
+//     console.log('middle');
+//   res.send("Hello, This is second middleware");
+// });
+
+
+// app.use('/welcome',(req,res,next)=>{
+//     console.log('A new request received at '+Date.now());
+//     next();
+// })
+
+
+// app.get('/',(req,res)=>{
+//     res.send('Hello, Tohid from Express')
+// })
+
+
+// app.get("/welcome", (req, res) => {
+//   res.send("Welcome, Tohid from Express");
+// });
+
+
+// app.use('/user',router)
+// app.use('/user',express.json())
+
+
+// app.get('/things/:name/:id',(req,res)=>{
+//     const {name, id}= req.params;
+//     res.json({
+//         id,
+//         name
+//     })
+// })
+
+
+//catch-all invalid route
+// app.use((req, res) => {
+//   res.status(404).send("Sorry, This is an invalid route");
+// });
+
+
+//parse json data
+
+// app.post('/user', (req,res)=>{
+//     const {name, email} = req.body;
+//     res.json({
+//         message: `User ${name} with email ${email} created successfully`
+//     })
+// })
+
+// app.put('/user/:id',(req,res)=>{
+//     const userId=req.params.id;
+//     const{name,email}=req.body;
+//     res.json({
+//         message:`User with ID ${userId} updated to ${name} and email is ${email}`
+//     })
+// })
+
+// app.delete('/user/:id',(req,res)=>{
+//     const userId=req.params.id;
+//     res.json({
+//         message:`User with ID ${userId} deleted successfully`
+//     })
+// })
+
+
+
+//error handling middleware
+
+// app.get('/error',()=>{
+//     throw new Error('This is test error')
+// })
+// app.use((err,req,res,next)=>{
+//     console.error(err.message);
+//     res.send('Internal Server Error occurred')
+// })
+
+
+//serve static files(example.txt)
+// app.use( express.static("public"));
+app.use('/public',express.static('public'))
+
+app.get('/',(req,res)=>{
+    res.send('Hello Express')
+})
+
+
+//set ejs as view engine
+app.set('view engine','ejs')
+
+app.get('/',(req,res)=>{
+    const userName='Tohid'
+    res.render('index',{userName})
+})
