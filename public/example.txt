@@ -122,3 +122,76 @@ app.post('/form',(req,res)=>{
     res.send('Form Submitted')
     
 })
+
+
+// saving data to mongodb
+app.post('/person',express.json(),async(req,res)=>{
+    try{
+    const {name,age,email} = req.body;
+    const newPerson = new Person({
+        name,
+        age,
+        email
+    })
+    await newPerson.save();
+    console.log("Person data saved to database");
+    res.send("Person data received")
+   }catch(error){
+    res.send('error.message')
+   }
+})
+
+//updating data in mongodb
+app.put("/person",  async (req, res) => {
+  console.log(req.body);
+  const { name } = req.body;
+  const personData = await Person.find({name})
+  console.log(personData);
+  res.send("Person data received");
+});
+
+// deleting data from database
+app.delete('/person/:id',async(req,res)=>{
+    const {id}=req.params;
+    await Person.findbyIdandDelete()
+    res.send('User Deleted')
+})
+
+app.use(cookieParser())
+
+// for session
+app.use(session({
+    secret:'sample-secret',
+    resave:false,
+    saveUninitialized:false,
+    
+}))
+app.get('/visit',(req,res)=>{
+    if(req.session.views){
+        req.session.views++
+        res.send(`You visited this page ${req.session.views} times`)
+    }
+    else{
+        req.session.views = 1
+        res.send('Welcome to this page for the first time')
+    }
+})
+app.get('/remove-session',(req,res)=>{
+    req.session.destroy()
+    res.send('session removed)
+})
+
+
+
+// for cookies
+
+app.get('/',(req,res)=>{
+    res.cookie('name','express-app')
+    res.send("Hello Express")
+})
+
+app.get('/fetch',(req,res)=>{
+    console.log(req.cookies);
+    res.send('API Called')
+    
+})
